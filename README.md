@@ -10,8 +10,8 @@ It runs entirely in the browser. No backend, no build step, no npm install. Just
 
 *(Add screenshots of the UI and generated resumes here)*
 
-![App Interface](screenshot-placeholder-ui.png)
-![Generated Resume](screenshot-placeholder-pdf.png)
+![App Interface](assets/screenshot-placeholder-ui.png)
+![Generated Resume](assets/screenshot-placeholder-pdf.png)
 
 ---
 
