@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResumeForge — LaTeX Resume Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="rb-wrap">
+    <div class="rb-sidebar">
+      <div class="rb-logo">
+        <div class="logo-icon"><i class="fa-solid fa-layer-group"></i></div>
+        <div class="logo-text">
+          <p>ResumeForge</p>
+          <span>LaTeX-powered</span>
+        </div>
+      </div>
+      <div class="rb-template-toggle">
+        <p>Template</p>
+        <button class="tpl-btn active" id="tpl-ats" onclick="setTemplate('ats')">
+          <i class="fa-solid fa-file-lines"></i>
+          <div class="tpl-info">
+            ATS Clean <small>Keyword-optimized</small>
+          </div>
+        </button>
+        <button class="tpl-btn" id="tpl-fang" onclick="setTemplate('fang')">
+          <i class="fa-solid fa-border-all"></i>
+          <div class="tpl-info">
+            FANG Modern <small>Product &amp; tech roles</small>
+          </div>
+        </button>
+      </div>
+      <div class="rb-nav">
+        <div class="nav-item active" onclick="switchSection('basics')"><i class="fa-regular fa-user"></i> Basics</div>
+        <div class="nav-item" onclick="switchSection('experience')"><i class="fa-solid fa-briefcase"></i> Experience
+        </div>
+        <div class="nav-item" onclick="switchSection('education')"><i class="fa-solid fa-graduation-cap"></i> Education
+        </div>
+        <div class="nav-item" onclick="switchSection('skills')"><i class="fa-solid fa-code"></i> Skills</div>
+        <div class="nav-item" onclick="switchSection('projects')"><i class="fa-solid fa-rocket"></i> Projects</div>
+        <div class="nav-item" onclick="switchSection('certifications')"><i class="fa-solid fa-certificate"></i>
+          Certifications</div>
+        <div class="nav-item" onclick="switchSection('publications')"><i class="fa-solid fa-book"></i> Publications
+        </div>
+        <div class="nav-item" onclick="switchSection('custom')"><i class="fa-solid fa-puzzle-piece"></i> Custom Section
+        </div>
+        <div class="nav-item export-nav" onclick="switchSection('export')"><i class="fa-solid fa-download"></i> Export
+          &amp; Share</div>
+      </div>
+    </div>
+
+    <div class="rb-main">
+      <div class="rb-toolbar">
+        <div>
+          <div class="rb-toolbar-title" id="toolbar-title">Personal information</div>
+          <div class="rb-toolbar-sub" id="toolbar-sub">Start with your contact details</div>
+        </div>
+        <div class="toolbar-actions">
+          <button class="btn-secondary" onclick="previewResume()"><i class="fa-solid fa-eye"></i> Preview PDF</button>
+          <button class="btn-primary" onclick="compileAndDownload()"><i class="fa-solid fa-cloud-arrow-down"></i>
+            Compile &amp; Download</button>
+        </div>
+      </div>
+
+      <div class="rb-content">
+
+        <!-- BASICS -->
+        <div class="section-panel active" id="panel-basics">
+          <div class="field-row">
+            <div class="field-group"><label class="field-label">Full name</label><input type="text" id="name"
+                placeholder="Jane Smith"></div>
+            <div class="field-group"><label class="field-label">Job title / tagline</label><input type="text" id="title"
+                placeholder="Senior Software Engineer"></div>
+          </div>
+          <div class="field-row">
+            <div class="field-group"><label class="field-label">Email</label><input type="email" id="email"
+                placeholder="jane@email.com"></div>
+            <div class="field-group"><label class="field-label">Phone</label><input type="text" id="phone"
+                placeholder="+1 (555) 000-0000"></div>
+          </div>
+          <div class="field-row">
+            <div class="field-group"><label class="field-label">Location</label><input type="text" id="location"
+                placeholder="San Francisco, CA"></div>
+            <div class="field-group"><label class="field-label">LinkedIn URL</label><input type="url" id="linkedin"
+                placeholder="linkedin.com/in/janesmith"></div>
+          </div>
+          <div class="field-row">
+            <div class="field-group"><label class="field-label">GitHub / Portfolio</label><input type="url" id="github"
+                placeholder="github.com/janesmith"></div>
+            <div class="field-group"><label class="field-label">Website</label><input type="url" id="website"
+                placeholder="janesmith.dev"></div>
+          </div>
+          <div class="field-group"><label class="field-label">Professional summary</label><textarea id="summary"
+              placeholder="2-3 sentence professional summary..."></textarea></div>
+        </div>
+
+        <!-- EXPERIENCE -->
+        <div class="section-panel" id="panel-experience">
+          <div class="section-heading">Work experience</div>
+          <div id="exp-list"></div>
+          <button class="btn-add" onclick="addEntry('exp')">+ Add experience</button>
+        </div>
+
+        <!-- EDUCATION -->
+        <div class="section-panel" id="panel-education">
+          <div class="section-heading">Education</div>
+          <div id="edu-list"></div>
+          <button class="btn-add" onclick="addEntry('edu')">+ Add education</button>
+        </div>
+
+        <!-- SKILLS -->
+        <div class="section-panel" id="panel-skills">
+          <div class="section-heading">Skills</div>
+          <div class="field-group">
+            <label class="field-label">Programming languages</label>
+            <div class="tag-input-wrap" id="tags-lang" onclick="focusTagInput('lang')">
+              <input class="tag-input" id="tag-input-lang" placeholder="Type and press Enter..."
+                onkeydown="handleTag(event,'lang')">
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Frameworks &amp; libraries</label>
+            <div class="tag-input-wrap" id="tags-fw" onclick="focusTagInput('fw')">
+              <input class="tag-input" id="tag-input-fw" placeholder="React, Node.js, PyTorch..."
+                onkeydown="handleTag(event,'fw')">
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Tools &amp; platforms</label>
+            <div class="tag-input-wrap" id="tags-tools" onclick="focusTagInput('tools')">
+              <input class="tag-input" id="tag-input-tools" placeholder="AWS, Docker, Git..."
+                onkeydown="handleTag(event,'tools')">
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Soft skills</label>
+            <div class="tag-input-wrap" id="tags-soft" onclick="focusTagInput('soft')">
+              <input class="tag-input" id="tag-input-soft" placeholder="Leadership, Communication..."
+                onkeydown="handleTag(event,'soft')">
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECTS -->
+        <div class="section-panel" id="panel-projects">
+          <div class="section-heading">Projects</div>
+          <div id="proj-list"></div>
+          <button class="btn-add" onclick="addEntry('proj')">+ Add project</button>
+        </div>
+
+        <!-- CERTIFICATIONS -->
+        <div class="section-panel" id="panel-certifications">
+          <div class="section-heading">Certifications</div>
+          <div id="cert-list"></div>
+          <button class="btn-add" onclick="addEntry('cert')">+ Add certification</button>
+        </div>
+
+        <!-- PUBLICATIONS -->
+        <div class="section-panel" id="panel-publications">
+          <div class="section-heading">Publications</div>
+          <div id="pub-list"></div>
+          <button class="btn-add" onclick="addEntry('pub')">+ Add publication</button>
+        </div>
+
+        <!-- CUSTOM -->
+        <div class="section-panel" id="panel-custom">
+          <div class="section-heading">Custom section</div>
+          <div class="field-group"><label class="field-label">Section title</label><input type="text" id="custom-title"
+              placeholder="e.g. Awards, Volunteering, Languages..."></div>
+          <div id="custom-list"></div>
+          <button class="btn-add" onclick="addEntry('custom')">+ Add item</button>
+        </div>
+
+        <!-- EXPORT -->
+        <div class="section-panel" id="panel-export">
+          <div class="section-heading"><i class="fa-solid fa-share-nodes"></i> Export &amp; share</div>
+          <div class="compile-box">
+            <div class="compile-status"><span class="status-dot" id="status-dot"></span><span id="status-text">Ready to
+                compile</span></div>
+          </div>
+          <div class="preview-area" id="preview-area">
+            <div class="preview-placeholder">
+              <div class="pdf-icon"><i class="fa-regular fa-file-pdf"></i></div>
+              <div class="preview-title">Click "Compile &amp; Download" to generate your resume</div>
+              <div class="pdf-sub">Powered by LaTeX via latex.ytotech.com</div>
+            </div>
+          </div>
+          <div class="share-section">
+            <div class="share-label">Share your resume</div>
+            <div class="share-row">
+              <button class="share-btn li" onclick="shareOn('linkedin')"><i class="fa-brands fa-linkedin"></i>
+                LinkedIn</button>
+              <button class="share-btn wa" onclick="shareOn('whatsapp')"><i class="fa-brands fa-whatsapp"></i>
+                WhatsApp</button>
+              <button class="share-btn ig" onclick="shareOn('instagram')"><i class="fa-brands fa-instagram"></i>
+                Instagram</button>
+              <button class="share-btn" onclick="copyLink()"><i class="fa-solid fa-link"></i> Copy link</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="app.js"></script>
+</body>
+
+</html>
